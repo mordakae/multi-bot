@@ -1,0 +1,96 @@
+# Copilot Synchronisation Instructions
+
+The default target for repo-wide rules is `./.github/copilot-instructions.md`.
+
+- Copy `./.agent_config/agent_config_version` to `./.github/copilot-config-version`
+- Integrate MCP servers from `./.agent_config/mcp.json` into `./.copilot/mcp-config.json`:
+  - Read the existing `./.copilot/mcp-config.json` (or start with `{}` if it doesn't exist)
+  - Merge the `mcpServers` block from `mcp.json` into `mcp-config.json` under the `mcpServers` key
+  - Preserve all other keys — do not overwrite them
+  - Note: `.copilot/mcp-config.json` is the project-level location Copilot CLI reads; it is
+    merged with user-level config at runtime. JetBrains IDEs do not support project-level MCP
+    config — users must configure MCP servers manually in their IDE settings.
+
+- Use `./.github/sync-history.yml` to track synchronised files:
+  ```yaml
+  instructions:
+    - <synced-rule>.instructions.md
+  agents:
+    - <synced-agent>.agent.md
+  skills:
+    - <synced-skill>/
+  ```
+
+---
+
+## Rules
+
+Copilot has two targets for rules depending on whether scoping is required:
+
+**Scoped rules** (frontmatter `globs` contains folder paths or file types):
+- Write to `./.github/instructions/<rule-name>.instructions.md`
+- Add `applyTo` frontmatter derived from `globs`:
+  - Folder paths → `applyTo: "path/**"`
+  - File type globs → `applyTo: "<glob pattern>"` (comma-separate multiple patterns)
+- If frontmatter `description` is present, include it as a HTML comment at the top of the file
+  body: `<!-- <description> -->`
+- Include the body content of the rule file below
+- Ensure the file is listed in `./.github/sync-history.yml` under `instructions`
+
+**Unscoped rules** (no `globs`, or `globs` is empty):
+- Append to `./.github/copilot-instructions.md` (the repo-wide instructions file)
+- Do not use headings — Copilot treats the whole file as plain prose
+- Separate multiple rule blocks with a blank line
+- Note: this file has no backup/user-pref mechanism; treat its entire content as agent-config-owned
+
+**Cleanup:**
+- For each `.instructions.md` file listed in `./.github/sync-history.yml`, if there is no
+  corresponding file in `./.agent_config/rules`, delete the `.instructions.md` file and remove
+  the entry from the history file
+
+---
+
+## Skills
+
+Skills are directories. For each directory in `./.agent_config/skills`:
+- The directory must contain a `SKILL.md` file
+- The target directory is `./.github/skills/<skill-name>/`
+- Copy `SKILL.md` to `./.github/skills/<skill-name>/SKILL.md`
+  - Adjust yaml frontmatter to use only fields supported by Copilot (`name`, `description`,
+    `license`):
+    - `model` and `allowed-tools` are not supported in Copilot skills — remove both
+    - For any other unsupported fields, ask the user whether to provide alternatives or let you
+      decide
+- If a `references/` subdirectory exists, copy all files to
+  `./.github/skills/<skill-name>/references/` as-is (Copilot does not process these but they
+  are available to the skill at runtime)
+- Ensure the skill is listed in `./.github/sync-history.yml` under `skills`
+
+**Cleanup:**
+- For each skill listed in history, if there is no corresponding directory in
+  `./.agent_config/skills`, delete the `./.github/skills/<skill-name>/` directory and remove
+  the entry from the history file
+
+---
+
+## Agents
+
+For each file in `./.agent_config/agents`:
+- The target file is `./.github/agents/<agent-name>.agent.md`
+- Adjust yaml frontmatter to use Copilot-supported fields:
+
+  | Agent config field | Copilot field      | Notes                                              |
+  |--------------------|--------------------|----------------------------------------------------|
+  | `name`             | `name`             | Direct copy                                        |
+  | `description`      | `description`      | Required by Copilot                                |
+  | `model`            | `model`            | Use a Copilot display-name (e.g. `Claude Sonnet 4.6`, `GPT-5 mini`, `Gemini 2.5 Pro`) — pick the closest equivalent |
+  | `tools`            | `tools`            | List of tool names, or omit to allow all tools    |
+  | (unsupported)      | —                  | Ask the user or research Copilot equivalents       |
+
+- Include the body content of the agent file unchanged
+- Ensure the agent is listed in `./.github/sync-history.yml` under `agents`
+
+**Cleanup:**
+- For each agent listed in history, if there is no corresponding file in
+  `./.agent_config/agents`, delete the `./.github/agents/<agent>.agent.md` file and remove
+  the entry from the history file

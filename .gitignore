@@ -1,0 +1,15 @@
+/.github/copilot-instructions.md
+/.github/instructions
+/.github/prompts/
+/.github/agents/
+
+**/.claude/
+**/CLAUDE.md
+!.agent_config/sync/claude.md
+.mcp.json
+
+**/AGENTS.md
+**/GEMINI.md
+!.agent_config/sync/gemini.md
+
+/.cursor
