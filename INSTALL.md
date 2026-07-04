@@ -4,8 +4,8 @@
   - `./AGENTS.md`
   - `./CLAUDE.md`
   - `./GEMINI.md`
-  - `./github/copilot-instructions.md`
-  - `./github/instructions/bootstrap.instructions.md`
+  - `./.github/copilot-instructions.md`
+  - `./.github/instructions/bootstrap.instructions.md`
   - `.cursor/rules/bootstrap.mdc`
 - Copy the `.agent_config` folder to your repo root
 - Delete the placeholder files/folders

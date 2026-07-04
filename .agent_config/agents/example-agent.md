@@ -1,7 +1,7 @@
 ---
 name: example-agent
 description: An example agent definition. Doesn't do anything
-model: composter-2.5
+model: <preferred-model-id>
 ---
 
 Do nothing.

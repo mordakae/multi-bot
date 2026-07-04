@@ -27,7 +27,7 @@ Adding a new platform means writing a `sync/<platform>.md` file and a bootstrap 
   agents/          # Agent persona definitions (.md)
   skills/          # Reusable skills (one directory per skill, with SKILL.md)
   rules/           # Platform-agnostic rules (.md, with optional frontmatter)
-  sync/           # Per-platform sync instructions
+  sync/            # Per-platform sync instructions
   mcp.json         # MCP server definitions (copied to each platform)
   agent_config_version   # Increment this to trigger a sync on next open
 
@@ -82,6 +82,15 @@ The `.gitignore` is a core part of the template and must not be modified casuall
 Each platform writes a local `agent_config_version` file after syncing. On every repo open, the bootstrap instruction compares that file against `.agent_config/agent_config_version`. A mismatch triggers the sync prompt.
 
 Increment `.agent_config/agent_config_version` any time you want all platforms to re-sync on their next open.
+
+## Using with agent-updater
+
+[agent-updater](https://github.com/mordakae/agent-updater) solves a complementary problem: keeping agent config packages *current* (pulled from their git remotes on a schedule), while Multi-Bot keeps them *consistent across platforms*. When both are installed in the same repo, compose them like this:
+
+- **agent-updater packages target `.agent_config/`, not platform-native dirs.** In a Multi-Bot repo, `.claude/`, `.cursor/`, etc. are generated, gitignored outputs — anything a package wrote there would be clobbered or orphaned on the next sync. Instead, packages install their rules into `.agent_config/rules/`, skills into `.agent_config/skills/`, and agents into `.agent_config/agents/`.
+- **After applying package changes, increment `.agent_config/agent_config_version`.** That is all it takes for every platform to pick the changes up through Multi-Bot's own sync on its next open.
+- **agent-updater's own always-loaded check is authored as an unscoped Multi-Bot rule** (e.g. `.agent_config/rules/agent-updater-check.md`), and its skills as Multi-Bot skills. Multi-Bot then fans the updater out to every platform automatically — no per-platform hand-translation needed.
+- **Ordering:** when a session starts, run the agent-updater due-check *first* (it may change `.agent_config/` content and bump the version), then the Multi-Bot version check — which then catches any bump in the same session.
 
 ## Contributing
 

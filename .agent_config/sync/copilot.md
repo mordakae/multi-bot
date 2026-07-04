@@ -2,7 +2,7 @@
 
 The default target for repo-wide rules is `./.github/copilot-instructions.md`.
 
-- Copy `./.agent_config/agent_config_version` to `./.github/copilot-config-version`
+- Copy `./.agent_config/agent_config_version` to `./.github/agent_config_version`
 - Integrate MCP servers from `./.agent_config/mcp.json` into `./.copilot/mcp-config.json`:
   - Read the existing `./.copilot/mcp-config.json` (or start with `{}` if it doesn't exist)
   - Merge the `mcpServers` block from `mcp.json` into `mcp-config.json` under the `mcpServers` key
@@ -41,7 +41,15 @@ Copilot has two targets for rules depending on whether scoping is required:
 - Append to `./.github/copilot-instructions.md` (the repo-wide instructions file)
 - Do not use headings — Copilot treats the whole file as plain prose
 - Separate multiple rule blocks with a blank line
-- Note: this file has no backup/user-pref mechanism; treat its entire content as agent-config-owned
+- Wrap all synced rule content in HTML comment markers so it can be identified on later syncs:
+  ```
+  <!-- agent-config:start -->
+  ...synced rule blocks...
+  <!-- agent-config:end -->
+  ```
+- Everything outside the markers (including the bootstrap instructions at the top of the file)
+  is user/bootstrap content — preserve it verbatim; on re-sync, replace only the content
+  between the markers
 
 **Cleanup:**
 - For each `.instructions.md` file listed in `./.github/sync-history.yml`, if there is no

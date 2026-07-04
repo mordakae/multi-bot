@@ -5,6 +5,8 @@
 Before doing anything else, compare the contents of these two files:
 - `./.agent_config/agent_config_version` (if missing, assume no change)
 - `./.codex/agent_config_version` (if missing, assume a change)
+  - If you are not Codex, use your own platform's config directory instead, e.g.
+    `./.<platform-name>/agent_config_version` (see `.agent_config/sync/other.md`)
 
 If the contents differ, **pause** the user's request and tell them:
 > "The agent config has been updated. Would you like to apply the update before we continue?"

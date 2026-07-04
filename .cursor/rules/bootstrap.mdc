@@ -15,5 +15,5 @@ If the contents differ, **pause** the user's request and tell them:
 > "The agent config has been updated. Would you like to apply the update before we continue?"
 
 - **Yes:** 
-  - Read `.agent_config/synch/cursor.md` and follow the synchronisation instructions. Then resume the original request.
+  - Read `.agent_config/sync/cursor.md` and follow the synchronisation instructions. Then resume the original request.
 - **No:** Proceed with the original request without applying the update.

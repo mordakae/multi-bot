@@ -12,7 +12,8 @@ Ask the user:
 
 ## If the user declines
 
-- Do not modify any files for this platform
+- Do not modify any files for this platform — including the local version file
+  (`./.<platform-name>/agent_config_version`), so the next session will prompt again
 - Tell the user which platform was skipped and that they can trigger the sync manually when ready
 - Continue with the original request
 

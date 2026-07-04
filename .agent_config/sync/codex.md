@@ -10,12 +10,12 @@ The default target is `./AGENTS.md`.
   - Scan every heading (`##`, `###`, etc.) and its content
   - A heading is **agent-config-owned** if it matches any of these patterns:
     - `## Rules` (exact)
-    - `## rules/<anything>`
+    - `### rules/<anything>` (child of `## Rules`)
     - `## Skills` (exact)
-    - `## skills/<anything>`
-    - `### <anything>` that is a child of a `## skills/` section (skill references)
-    - `## Agents / Personas` (exact)
-    - `### agents/<anything>`
+    - `### skills/<anything>` (child of `## Skills`)
+    - `#### <anything>` that is a child of a `### skills/` section (skill references)
+    - `## Agents` (exact)
+    - `### agents/<anything>` (child of `## Agents`)
     - `## USER PREFS` (exact — exempt, handled separately below)
   - Any heading (and all content beneath it until the next same-or-higher-level heading) that
     does **not** match the above patterns is a **user pref**
@@ -28,7 +28,8 @@ The default target is `./AGENTS.md`.
 ## Rules
 
 For each file in `./.agent_config/rules`:
-- The heading is the file path from `.agent_config`, e.g. `rules/foo.md` → `## rules/foo.md`
+- Place entries under the top-level `## Rules` section
+- The heading is the file path from `.agent_config`, e.g. `rules/foo.md` → `### rules/foo.md`
 - If frontmatter `globs` contains specific folder path(s):
   - Target `./specific/folder/path(s)/AGENTS.md` (create multiple instances as needed)
   - Otherwise target the default
@@ -44,19 +45,19 @@ For each file in `./.agent_config/rules`:
 
 Skills are directories, not flat files. For each directory in `./.agent_config/skills`:
 - The directory must contain a `SKILL.md` file
-- The heading is `skills/<dir-name>`, e.g. `skills/example-skill` → `## skills/example-skill`
+- The heading is `skills/<dir-name>`, e.g. `skills/example-skill` → `### skills/example-skill`
   under the top-level `## Skills` section
 - Apply the same `globs` and `description` rules as for rules (above)
 - Include the body content of `SKILL.md`
 - If a `references/` subdirectory exists, append each file's content under a sub-heading named
-  after the filename, e.g. `references/additional-info.md` → `### additional-info.md`
+  after the filename, e.g. `references/additional-info.md` → `#### additional-info.md`
 
 ---
 
-## Agents / Personas
+## Agents
 
 For each file in `./.agent_config/agents`:
-- Place entries under the top-level `## Personas` section
+- Place entries under the top-level `## Agents` section
 - The heading is `agents/<filename>`, e.g. `agents/foo.md` → `### agents/foo.md`
 - Apply the same `globs` and `description` rules as for rules (above)
 - Include the body content of the file

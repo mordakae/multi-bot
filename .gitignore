@@ -2,6 +2,10 @@
 /.github/instructions
 /.github/prompts/
 /.github/agents/
+/.github/skills/
+/.github/sync-history.yml
+/.github/agent_config_version
+/.copilot/
 
 **/.claude/
 **/CLAUDE.md
@@ -11,5 +15,8 @@
 **/AGENTS.md
 **/GEMINI.md
 !.agent_config/sync/gemini.md
+/.gemini/
+
+/.codex/
 
 /.cursor

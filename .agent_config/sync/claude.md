@@ -20,7 +20,7 @@ The default target is `./.claude/CLAUDE.md`.
   agents:
     - <synced-agent>.md
   skills:
-    - <synced-skill>.md
+    - <synced-skill>/
   ```
 
 ---
@@ -44,14 +44,13 @@ For each file in `./.agent_config/rules`:
 
 Skills are directories, not flat files. For each directory in `./.agent_config/skills`:
 - The directory must contain a `SKILL.md` file
-- The target file is `./.claude/commands/<name>.md` where `<name>` is taken from the
-  frontmatter `name` field in `SKILL.md`
-- The target file must contain:
-  - All content from `SKILL.md`
-  - Then each file from the `references/` subdirectory (if it exists) appended under a heading
-    named after the filename, e.g. `references/additional-info.md` → `## additional-info.md`
-- Adjust yaml frontmatter to use only fields supported by Claude Code (e.g. `description`,
-  `allowed-tools`, `model`):
+- The target directory is `./.claude/skills/<name>/` where `<name>` is taken from the
+  frontmatter `name` field in `SKILL.md` (Claude Code's native skills location)
+- Copy `SKILL.md` to `./.claude/skills/<name>/SKILL.md`
+- If a `references/` subdirectory exists, copy it as-is to `./.claude/skills/<name>/references/`
+  — do not inline the reference files into `SKILL.md`; Claude Code loads them on demand
+- Adjust the yaml frontmatter of `SKILL.md` to use only fields supported by Claude Code skills
+  (e.g. `name`, `description`, `allowed-tools`, `model`):
   - For unsupported fields, ask the user whether they want to provide alternatives or let you
     decide — if the latter, research how the field is used and how Claude provides the same
     functionality
