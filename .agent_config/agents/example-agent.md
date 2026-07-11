@@ -1,6 +1,6 @@
 ---
 name: example-agent
-description: An example agent definition. Doesn't do anything
+description: Example agent; does nothing
 model: <preferred-model-id>
 ---
 

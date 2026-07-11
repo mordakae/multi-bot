@@ -1,5 +1,5 @@
 ---
-description: Bootstrap check - Verifies agent config has been initialised from .agent_config/. Always applied
+description: Bootstrap check for agent config sync
 alwaysApply: true
 ---
 

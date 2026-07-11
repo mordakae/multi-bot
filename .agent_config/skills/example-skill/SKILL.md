@@ -1,6 +1,6 @@
 ---
 name: example-skill
-description: This skill exists for demo purposes and doesn't actually do anything.
+description: Example skill; does nothing
 ---
 
 # Do something

@@ -83,6 +83,27 @@ Each platform writes a local `agent_config_version` file after syncing. On every
 
 Increment `.agent_config/agent_config_version` any time you want all platforms to re-sync on their next open.
 
+## Persistent Context Cost
+> **What every session pays, whether or not a sync is due**
+
+Multi-Bot ships no always-loaded skills or rules of its own — the only thing it puts in front of the agent on every session is a single bootstrap hook that reads two version files and, if they match, does nothing else. That hook is the entire standing footprint, and each developer pays only for the platform they actually use:
+
+| Platform | Bootstrap hook | Tokens |
+| --- | --- | ---: |
+| Claude Code | `CLAUDE.md` | 143 |
+| Cursor | `.cursor/rules/bootstrap.mdc` | 156 |
+| Google Gemini | `GEMINI.md` | 142 |
+| GitHub Copilot | `.github/copilot-instructions.md` | 142 † |
+| Codex / generic | `AGENTS.md` | 207 ‡ |
+
+Everything heavier — the `.agent_config/` sources and the per-platform `sync/*.md` instructions — loads on demand, only when a version mismatch triggers a sync, so it never touches the persistent cost.
+
+**Your own config adds to this.** Every skill and agent you author contributes its `name` + `description` to the always-loaded list on each session (the trimmed example skill and agent cost ~5 tokens of description each). That per-item tax is why descriptions should stay tight — keep them to a terse "what it does", and let the body carry the detail, which loads only when the item is actually invoked.
+
+<sub>† `copilot-instructions.md` is reliably always-loaded; the README also requires the duplicate `.github/instructions/bootstrap.instructions.md` (another 142) for reliable adherence — count ~284 if both load.</sub>
+<br><sub>‡ `AGENTS.md` runs heavier than the others because its body carries extra guidance for non-Codex generic agents.</sub>
+<br><sub>Measured locally with [tiktoken](https://github.com/openai/tiktoken) (`cl100k_base`); treat the figures as accurate to ±~10%.</sub>
+
 ## Using with agent-updater
 
 [agent-updater](https://github.com/mordakae/agent-updater) solves a complementary problem: keeping agent config packages *current* (pulled from their git remotes on a schedule), while Multi-Bot keeps them *consistent across platforms*. When both are installed in the same repo, compose them like this:
