@@ -15,6 +15,23 @@
 
 ---
 
+## Confirm current platform conventions
+
+Your training data may predate Cursor's current config format. Before applying anything below,
+confirm Cursor's **current** conventions for the surfaces this sync touches — where rules, skills,
+agents, and MCP config are read from, and which frontmatter fields (e.g. `.mdc` rule fields) each
+supports — from the platform's current documentation, using any config already present in the repo
+as a clue.
+
+This governs only *how* config is placed and formatted for Cursor. It is **not** license to alter
+the source content in `./.agent_config/` (translate format, never meaning), to add, drop, or
+restructure config beyond what these instructions describe, or to change Multi-Bot's sync model.
+Where a section below already resolves a specific format detail, that detail stands unless current
+documentation shows it has changed. If research is unavailable, fall back to the format details
+written in this file.
+
+---
+
 ## Rules
 
 For each file in `./.agent_config/rules`:

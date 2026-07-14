@@ -1,22 +1,6 @@
-/.github/copilot-instructions.md
-/.github/instructions
-/.github/prompts/
-/.github/agents/
-/.github/skills/
-/.github/sync-history.yml
-/.github/agent_config_version
-/.copilot/
-
-**/.claude/
-**/CLAUDE.md
-!.agent_config/sync/claude.md
-.mcp.json
-
-**/AGENTS.md
-**/GEMINI.md
-!.agent_config/sync/gemini.md
-/.gemini/
-
-/.codex/
-
-/.cursor
+# Multi-Bot is a docs-and-examples repo. The tracked product lives under
+# example-repo-level/ and example-user-level/ (each with its own ignore rules,
+# where applicable). Only ignore local, root-level agent scratch here — keep
+# these patterns root-anchored so they never match the example trees.
+/.claude/
+/.mcp.json
